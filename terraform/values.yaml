@@ -1,0 +1,35 @@
+api:
+  ingress:
+    hosts:
+      - host: local-api-sorry-cypress.com.br
+    tls:
+      - hosts:
+          - local-api-sorry-cypress.com.br
+        secretName: cert-secret
+
+dashboard:
+  environmentVariables:
+    graphQlSchemaUrl: https://local-api-sorry-cypress.com.br
+  ingress:
+    hosts:
+      - host: local-sorry-cypress.com.br
+    tls:
+      - hosts:
+          - local-sorry-cypress.com.br
+        secretName: cert-secret
+
+director:
+  environmentVariables:
+    dashboardUrl: https://local-sorry-cypress.com.br
+    screenshotsDriver: "../screenshots/minio.driver"
+    executionDriver: "../execution/mongo/driver"
+  ingress:
+    hosts:
+      - host: local-director-sorry-cypress.com.br
+    tls:
+      - hosts:
+          - local-director-sorry-cypress.com.br
+        secretName: cert-secret
+
+minio:
+  enabled: true

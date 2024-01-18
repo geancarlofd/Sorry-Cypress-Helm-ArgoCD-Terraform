@@ -1,0 +1,57 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sorry-cypress
+  namespace: argocd
+spec:
+  project: tools
+  source:
+    chart: sorry-cypress
+    repoURL: https://sorry-cypress.github.io/charts
+    targetRevision: 1.20.0
+    helm:
+      releaseName: sorry-cypress
+      parameters:
+        #Values API
+        - name: api.ingress.hosts[0].host
+          value: "local-api-sorry-cypress.com.br"
+        - name: api.ingress.tls[0].host
+          value: "local-api-sorry-cypress.com.br"
+        - name: api.ingress.tls[0].secretName
+          value: cert-secret
+          #Values Dashboard
+        - name: dashboard.ingress.hosts[0].host
+          value: "local-sorry-cypress.com.br"
+        - name: dashboard.ingress.tls[0].host
+          value: "local-sorry-cypress.com.br"
+        - name: dashboard.ingress.tls[0].secretName
+          value: cert-secret
+        - name: dashboard.environmentVariables.graphQlSchemaUrl
+          value: "https://local-api-sorry-cypress.com.br"
+          #Values Director
+        - name: director.ingress.hosts[0].host
+          value: "local-director-sorry-cypress.com.br"
+        - name: director.ingress.tls[0].host
+          value: "local-director-sorry-cypress.com.br"
+        - name: director.ingress.tls[0].secretName
+          value: cert-secret
+        - name: director.environmentVariables.dashboardUrl
+          value: "https://local-sorry-cypress.com.br"
+        - name: director.environmentVariables.screenshotsDriver
+          value: "../screenshots/minio.driver"
+        - name: director.environmentVariables.executionDriver
+          value: "../execution/mongo/driver"
+          #Values Minio
+        - name: minio.enabled
+          value: "true"
+  destination:
+    server: { { server } }
+    namespace: sorry-cypress
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - PruneLast=true
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
