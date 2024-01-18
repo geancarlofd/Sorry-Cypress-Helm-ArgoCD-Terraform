@@ -1,4 +1,4 @@
-<img src="https://avatars.githubusercontent.com/u/64430146?s=200&v=" alt="Sorry Cypress" width="50"/>
+<img src="https://avatars.githubusercontent.com/u/64430146?s=200&v=" alt="Sorry Cypress" width="100"/>
 
 # Repositório para Deploy do Sorry Cypress com Helm Charts
 
